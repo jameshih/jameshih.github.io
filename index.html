@@ -2,10 +2,768 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="refresh" content="0; url=https://shih.app/blog" />
-    <title>Redirecting...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>⚡ Pokemon Adventure ⚡</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        overflow: hidden;
+        background: #e8f8e8;
+        font-family: 'Press Start 2P', monospace;
+        position: relative;
+        image-rendering: pixelated;
+      }
+
+      /* Battle background */
+      #battle-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 50vh;
+        background: linear-gradient(to bottom, #a8d8f0 0%, #d0f0d8 100%);
+        z-index: 1;
+      }
+
+      #battle-ground {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 50vh;
+        background: linear-gradient(to bottom, #88cc88 0%, #60a060 100%);
+        z-index: 1;
+      }
+
+      /* Battle platform - HIDDEN */
+      .platform {
+        display: none;
+      }
+
+      /* Logo as Pokemon */
+      #pokemon-container {
+        position: fixed;
+        top: 35%;
+        left: 50%;
+        z-index: 10;
+        opacity: 0;
+        transform: translateX(-50%) scale(4);
+        animation: legendaryAppear 0.8s ease-out 1s forwards;
+      }
+
+      @keyframes legendaryAppear {
+        0% {
+          opacity: 0;
+          transform: translateX(-50%) scale(4);
+        }
+        40% {
+          opacity: 0.3;
+          transform: translateX(-50%) scale(4);
+        }
+        100% {
+          opacity: 1;
+          transform: translateX(-50%) scale(1);
+        }
+      }
+
+      #pokemon-logo {
+        width: 200px;
+        height: auto;
+        animation: pokemonIdle 0.8s ease-in-out infinite 1.8s;
+      }
+
+      @keyframes pokemonIdle {
+        0%, 100% {
+          transform: translateY(0) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-15px) rotate(3deg);
+        }
+      }
+
+      /* Screen flash effect */
+      #flash {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: #fff;
+        z-index: 10000;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .flash-anim {
+        animation: legendaryFlash 1.2s ease-out;
+      }
+
+      @keyframes legendaryFlash {
+        0% { opacity: 0; }
+        5% { opacity: 1; }
+        10% { opacity: 1; }
+        15% { opacity: 1; }
+        20% { opacity: 1; }
+        30% { opacity: 1; }
+        40% { opacity: 1; }
+        50% { opacity: 1; }
+        60% { opacity: 0; }
+      }
+
+      /* Screen shake */
+      .shake {
+        animation: legendaryShake 0.8s ease-in-out;
+      }
+
+      @keyframes legendaryShake {
+        0%, 100% { transform: translate(0, 0); }
+        5% { transform: translate(-8px, 2px); }
+        10% { transform: translate(8px, -2px); }
+        15% { transform: translate(-8px, -2px); }
+        20% { transform: translate(8px, 2px); }
+        25% { transform: translate(-6px, 2px); }
+        30% { transform: translate(6px, -2px); }
+        35% { transform: translate(-6px, -2px); }
+        40% { transform: translate(6px, 2px); }
+        45% { transform: translate(-4px, 1px); }
+        50% { transform: translate(4px, -1px); }
+        55% { transform: translate(-4px, -1px); }
+        60% { transform: translate(4px, 1px); }
+        65% { transform: translate(-2px, 0px); }
+        70% { transform: translate(2px, 0px); }
+        75% { transform: translate(-2px, 0px); }
+        80% { transform: translate(2px, 0px); }
+      }
+
+      /* Exclamation mark - Comic/Manga style CENTERED */
+      .exclamation {
+        position: fixed;
+        top: 50vh;
+        left: 50vw;
+        font-size: 150px;
+        z-index: 10001;
+        animation: exclamationComic 0.6s ease-out forwards;
+        opacity: 0;
+        color: #fff;
+        font-weight: 900;
+        line-height: 1;
+        text-shadow:
+          6px 6px 0 #ff0000,
+          -6px -6px 0 #ff0000,
+          6px -6px 0 #ff0000,
+          -6px 6px 0 #ff0000,
+          0 0 30px #ff0000,
+          0 0 50px #ff0000,
+          0 0 70px #ff0000;
+        transform: translate(-50%, -50%);
+      }
+
+      .exclamation::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 350px;
+        height: 350px;
+        background: radial-gradient(circle, rgba(255, 255, 0, 0.95) 0%, rgba(255, 255, 0, 0.5) 30%, transparent 65%);
+        border-radius: 50%;
+        z-index: -1;
+        animation: exclamationGlowComic 0.6s ease-out forwards;
+      }
+
+      @keyframes exclamationComic {
+        0% {
+          opacity: 0;
+          transform: translate(-50%, -50%) scale(0) rotate(-30deg);
+        }
+        25% {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1.5) rotate(10deg);
+        }
+        45% {
+          transform: translate(-50%, -50%) scale(1.2) rotate(-8deg);
+        }
+        65% {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1.3) rotate(5deg);
+        }
+        85% {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1.25) rotate(0deg);
+        }
+        100% {
+          opacity: 0;
+          transform: translate(-50%, -50%) scale(1) rotate(0deg);
+        }
+      }
+
+      @keyframes exclamationGlowComic {
+        0% {
+          transform: translate(-50%, -50%) scale(0);
+          opacity: 0;
+        }
+        30% {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: translate(-50%, -50%) scale(2);
+        }
+      }
+
+      /* Anime speed lines radiating from center */
+      .radial-line {
+        position: fixed;
+        top: 50vh;
+        left: 50vw;
+        width: 8px;
+        height: 0;
+        background: linear-gradient(to bottom, #fff 0%, rgba(255, 255, 255, 0.7) 50%, transparent 100%);
+        transform-origin: top center;
+        z-index: 9998;
+        animation: radialExpandComic 0.5s ease-out forwards;
+      }
+
+      @keyframes radialExpandComic {
+        0% {
+          height: 0;
+          opacity: 1;
+        }
+        100% {
+          height: 250px;
+          opacity: 0;
+        }
+      }
+
+      /* Comic book style impact burst */
+      .impact-burst {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        margin-left: -225px;
+        margin-top: -225px;
+        width: 450px;
+        height: 450px;
+        border: 10px solid #fff;
+        z-index: 97;
+        opacity: 0;
+        animation: impactBurstComic 0.5s ease-out forwards;
+        clip-path: polygon(
+          50% 0%, 61% 35%, 98% 35%, 68% 57%,
+          79% 91%, 50% 70%, 21% 91%, 32% 57%,
+          2% 35%, 39% 35%
+        );
+      }
+
+      @keyframes impactBurstComic {
+        0% {
+          opacity: 0;
+          transform: scale(0) rotate(0deg);
+        }
+        30% {
+          opacity: 1;
+          transform: scale(0.7) rotate(0deg);
+        }
+        100% {
+          opacity: 0;
+          transform: scale(1.8) rotate(90deg);
+        }
+      }
+
+      /* Impact lines */
+      .impact-line {
+        position: fixed;
+        height: 6px;
+        background: #fff;
+        z-index: 50;
+        animation: impactLine 0.4s ease-out forwards;
+      }
+
+      @keyframes impactLine {
+        0% {
+          width: 0;
+          opacity: 1;
+        }
+        100% {
+          width: 100%;
+          opacity: 0;
+        }
+      }
+
+      /* Speed lines */
+      .speed-line {
+        position: fixed;
+        width: 150px;
+        height: 4px;
+        background: linear-gradient(90deg, transparent, #fff, transparent);
+        z-index: 5;
+        animation: speedLine 0.3s linear forwards;
+      }
+
+      @keyframes speedLine {
+        0% {
+          left: -150px;
+          opacity: 1;
+        }
+        100% {
+          left: 100%;
+          opacity: 0;
+        }
+      }
+
+      /* Burst particles */
+      .burst {
+        position: fixed;
+        width: 10px;
+        height: 10px;
+        background: #ffff00;
+        border-radius: 50%;
+        z-index: 15;
+        animation: burst 0.8s ease-out forwards;
+      }
+
+      @keyframes burst {
+        0% {
+          transform: translate(0, 0) scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: translate(var(--x), var(--y)) scale(0);
+          opacity: 0;
+        }
+      }
+
+      /* Aura waves */
+      .aura {
+        position: fixed;
+        width: 250px;
+        height: 250px;
+        border: 4px solid #ffff00;
+        border-radius: 50%;
+        z-index: 8;
+        animation: auraWave 1s ease-out forwards;
+      }
+
+      @keyframes auraWave {
+        0% {
+          transform: translate(-50%, -50%) scale(0.5);
+          opacity: 1;
+        }
+        100% {
+          transform: translate(-50%, -50%) scale(2.5);
+          opacity: 0;
+        }
+      }
+
+      /* HP Bar */
+      .hp-bar-container {
+        position: fixed;
+        background: #fff;
+        border: 3px solid #000;
+        border-radius: 8px;
+        padding: 12px;
+        z-index: 20;
+        top: 160px;
+        left: 50%;
+        margin-left: -250px;
+        opacity: 0;
+        animation: hpBarSlide 0.4s ease-out 1.8s forwards;
+      }
+
+      @keyframes hpBarSlide {
+        0% {
+          opacity: 0;
+          transform: translateX(-50px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .pokemon-name {
+        font-size: 14px;
+        color: #000;
+        margin-bottom: 8px;
+      }
+
+      .hp-label {
+        font-size: 10px;
+        color: #666;
+        margin-bottom: 4px;
+      }
+
+      .hp-bar-outer {
+        width: 200px;
+        height: 12px;
+        background: #000;
+        border-radius: 4px;
+        padding: 2px;
+      }
+
+      .hp-bar-inner {
+        width: 0%;
+        height: 100%;
+        background: #58d858;
+        border-radius: 2px;
+        transition: width 0.8s ease-out;
+      }
+
+      .level {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        font-size: 12px;
+        color: #000;
+      }
+
+      /* Pokemon text box */
+      .text-box {
+        position: fixed;
+        bottom: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100% - 80px);
+        max-width: 700px;
+        background: #fff;
+        border: 4px solid #000;
+        border-radius: 12px;
+        padding: 20px 30px;
+        z-index: 30;
+        animation: textBoxAppear 0.3s ease-out forwards;
+        opacity: 0;
+      }
+
+      @keyframes textBoxAppear {
+        0% {
+          opacity: 0;
+          transform: translateX(-50%) translateY(20px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateX(-50%) translateY(0);
+        }
+      }
+
+      .text-content {
+        font-size: 14px;
+        color: #000;
+        line-height: 1.8;
+        white-space: pre-line;
+      }
+
+      .text-arrow {
+        position: absolute;
+        bottom: 15px;
+        right: 20px;
+        font-size: 16px;
+        animation: arrowBlink 0.8s ease-in-out infinite;
+      }
+
+      @keyframes arrowBlink {
+        0%, 50% { opacity: 1; }
+        51%, 100% { opacity: 0; }
+      }
+
+      /* Sparkles */
+      .sparkle {
+        position: fixed;
+        font-size: 28px;
+        animation: sparkleFloat 1.2s ease-out forwards;
+        z-index: 12;
+        pointer-events: none;
+      }
+
+      @keyframes sparkleFloat {
+        0% {
+          transform: translateY(0) scale(0) rotate(0deg);
+          opacity: 1;
+        }
+        50% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-100px) scale(1.5) rotate(180deg);
+          opacity: 0;
+        }
+      }
+
+      /* Energy ring */
+      .energy-ring {
+        position: fixed;
+        width: 300px;
+        height: 300px;
+        border: 6px solid #00ffff;
+        border-radius: 50%;
+        z-index: 9;
+        opacity: 0;
+        animation: energyPulse 0.6s ease-out forwards;
+      }
+
+      @keyframes energyPulse {
+        0% {
+          transform: translate(-50%, -50%) scale(0) rotate(0deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translate(-50%, -50%) scale(2) rotate(180deg);
+          opacity: 0;
+        }
+      }
+
+      /* Mobile - center the health card */
+      @media (max-width: 768px) {
+        .hp-bar-container {
+          margin-left: 0;
+          transform: translateX(-50%);
+        }
+
+        @keyframes hpBarSlide {
+          0% {
+            opacity: 0;
+            transform: translateX(-50%) translateY(-30px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+          }
+        }
+      }
+
+    </style>
   </head>
   <body>
-    <p>Redirecting to <a href="https://shih.app/blog">James Shih's personal blog</a>...</p>
+    <div id="battle-bg"></div>
+    <div id="battle-ground"></div>
+    <div id="flash"></div>
+
+    <div class="platform enemy"></div>
+    <div class="platform player"></div>
+
+    <div id="pokemon-container">
+      <img src="js.svg" id="pokemon-logo" alt="">
+    </div>
+
+    <div class="hp-bar-container">
+      <div class="level">Lv99</div>
+      <div class="pokemon-name">JAMES SHIH</div>
+      <div class="hp-label">HP:</div>
+      <div class="hp-bar-outer">
+        <div class="hp-bar-inner" id="hp-bar"></div>
+      </div>
+    </div>
+
+    <script>
+      // Legendary encounter sequence
+      const flash = document.getElementById('flash');
+
+      // Initial screen flash
+      setTimeout(() => {
+        flash.classList.add('flash-anim');
+        setTimeout(() => flash.classList.remove('flash-anim'), 1200);
+      }, 50);
+
+      // Exclamation mark - Comic/Manga style DEAD CENTER
+      setTimeout(() => {
+        // Comic book impact burst
+        const impactBurst = document.createElement('div');
+        impactBurst.className = 'impact-burst';
+        document.body.appendChild(impactBurst);
+        setTimeout(() => impactBurst.remove(), 500);
+
+        // Create radial speed lines (comic focus lines)
+        for (let i = 0; i < 24; i++) {
+          const line = document.createElement('div');
+          line.className = 'radial-line';
+          const angle = (360 / 24) * i;
+          line.style.transform = `translate(-50%, 0) rotate(${angle}deg)`;
+          document.body.appendChild(line);
+          setTimeout(() => line.remove(), 500);
+        }
+
+        // Create GIANT exclamation mark
+        const exclaim = document.createElement('div');
+        exclaim.className = 'exclamation';
+        exclaim.textContent = '!';
+        document.body.appendChild(exclaim);
+        setTimeout(() => exclaim.remove(), 600);
+      }, 100);
+
+      // Screen shake
+      setTimeout(() => {
+        document.body.classList.add('shake');
+        setTimeout(() => document.body.classList.remove('shake'), 800);
+      }, 150);
+
+      // Impact lines - multiple waves
+      setTimeout(() => {
+        for (let i = 0; i < 8; i++) {
+          setTimeout(() => {
+            const line = document.createElement('div');
+            line.className = 'impact-line';
+            line.style.top = (10 + i * 12) + '%';
+            line.style.left = '0';
+            document.body.appendChild(line);
+            setTimeout(() => line.remove(), 400);
+          }, i * 40);
+        }
+      }, 200);
+
+      // Speed lines - continuous waves
+      function createSpeedLineWave() {
+        for (let i = 0; i < 12; i++) {
+          setTimeout(() => {
+            const line = document.createElement('div');
+            line.className = 'speed-line';
+            line.style.top = Math.random() * 100 + '%';
+            document.body.appendChild(line);
+            setTimeout(() => line.remove(), 300);
+          }, i * 25);
+        }
+      }
+
+      setTimeout(() => createSpeedLineWave(), 300);
+      setTimeout(() => createSpeedLineWave(), 600);
+      setTimeout(() => createSpeedLineWave(), 900);
+
+      // Energy rings when Pokemon appears
+      setTimeout(() => {
+        for (let i = 0; i < 3; i++) {
+          setTimeout(() => {
+            const ring = document.createElement('div');
+            ring.className = 'energy-ring';
+            ring.style.left = '50%';
+            ring.style.top = '35%';
+            ring.style.animationDelay = (i * 0.15) + 's';
+            document.body.appendChild(ring);
+            setTimeout(() => ring.remove(), 1000);
+          }, i * 200);
+        }
+      }, 1000);
+
+      // Aura waves
+      setTimeout(() => {
+        for (let i = 0; i < 4; i++) {
+          setTimeout(() => {
+            const aura = document.createElement('div');
+            aura.className = 'aura';
+            aura.style.left = '50%';
+            aura.style.top = '35%';
+            document.body.appendChild(aura);
+            setTimeout(() => aura.remove(), 1000);
+          }, i * 250);
+        }
+      }, 1100);
+
+      // Burst particles - massive explosion
+      setTimeout(() => {
+        for (let i = 0; i < 30; i++) {
+          const burst = document.createElement('div');
+          burst.className = 'burst';
+          burst.style.left = '50%';
+          burst.style.top = '35%';
+          const angle = (Math.PI * 2 * i) / 30;
+          const distance = 80 + Math.random() * 80;
+          burst.style.setProperty('--x', Math.cos(angle) * distance + 'px');
+          burst.style.setProperty('--y', Math.sin(angle) * distance + 'px');
+          burst.style.animationDelay = (i * 0.02) + 's';
+          document.body.appendChild(burst);
+          setTimeout(() => burst.remove(), 800);
+        }
+      }, 1200);
+
+      // Continuous sparkle effects
+      function createSparkle() {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        sparkle.textContent = '✨';
+        sparkle.style.left = (Math.random() * 70 + 15) + '%';
+        sparkle.style.top = (Math.random() * 50 + 20) + '%';
+        document.body.appendChild(sparkle);
+        setTimeout(() => sparkle.remove(), 1200);
+      }
+
+      // Sparkle bursts at different moments
+      setTimeout(() => {
+        for (let i = 0; i < 15; i++) {
+          setTimeout(createSparkle, i * 80);
+        }
+      }, 300);
+
+      setTimeout(() => {
+        for (let i = 0; i < 12; i++) {
+          setTimeout(createSparkle, i * 100);
+        }
+      }, 1200);
+
+      // Continuous sparkles
+      setInterval(createSparkle, 200);
+
+      // HP bar animation
+      setTimeout(() => {
+        document.getElementById('hp-bar').style.width = '100%';
+      }, 2000);
+
+      // Text sequence
+      const texts = [
+        { content: "A wild JAMES SHIH appeared!", delay: 2200 },
+        { content: "Entering personal site!", delay: 4000 },
+      ];
+
+      texts.forEach(txt => {
+        setTimeout(() => {
+          const oldBox = document.querySelector('.text-box');
+          if (oldBox) oldBox.remove();
+
+          const textBox = document.createElement('div');
+          textBox.className = 'text-box';
+          textBox.innerHTML = `
+            <div class="text-content">${txt.content}</div>
+            <div class="text-arrow">▼</div>
+          `;
+          document.body.appendChild(textBox);
+
+          // Sparkle burst on text
+          for (let i = 0; i < 8; i++) {
+            setTimeout(createSparkle, i * 60);
+          }
+        }, txt.delay);
+      });
+
+      // Final burst before redirect
+      setTimeout(() => {
+        for (let i = 0; i < 40; i++) {
+          setTimeout(createSparkle, i * 20);
+        }
+
+        for (let i = 0; i < 15; i++) {
+          setTimeout(() => {
+            const line = document.createElement('div');
+            line.className = 'speed-line';
+            line.style.top = Math.random() * 100 + '%';
+            document.body.appendChild(line);
+            setTimeout(() => line.remove(), 300);
+          }, i * 40);
+        }
+      }, 5800);
+
+      // Redirect
+      setTimeout(() => {
+        document.body.style.transition = 'opacity 0.4s ease-out';
+        document.body.style.opacity = '0';
+        setTimeout(() => {
+          window.location.href = 'https://shih.app/blog';
+        }, 400);
+      }, 6500);
+    </script>
   </body>
 </html>
