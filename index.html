@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>⚡ Pokemon Adventure ⚡</title>
+    <title>James Shih</title>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
@@ -47,8 +47,7 @@
         display: none;
       }
 
-      /* Logo as Pokemon */
-      #pokemon-container {
+      #main-container {
         position: fixed;
         top: 35%;
         left: 50%;
@@ -73,13 +72,13 @@
         }
       }
 
-      #pokemon-logo {
+      #main-logo {
         width: 200px;
         height: auto;
-        animation: pokemonIdle 0.8s ease-in-out infinite 1.8s;
+        animation: mainIdle 0.8s ease-in-out infinite 1.8s;
       }
 
-      @keyframes pokemonIdle {
+      @keyframes mainIdle {
         0%, 100% {
           transform: translateY(0) rotate(0deg);
         }
@@ -390,7 +389,7 @@
         }
       }
 
-      .pokemon-name {
+      .main-name {
         font-size: 14px;
         color: #000;
         margin-bottom: 8px;
@@ -426,7 +425,7 @@
         color: #000;
       }
 
-      /* Pokemon text box */
+      /* main text box */
       .text-box {
         position: fixed;
         bottom: 40px;
@@ -549,13 +548,13 @@
     <div class="platform enemy"></div>
     <div class="platform player"></div>
 
-    <div id="pokemon-container">
-      <img src="js.svg" id="pokemon-logo" alt="">
+    <div id="main-container">
+      <img src="js.svg" id="main-logo" alt="">
     </div>
 
     <div class="hp-bar-container">
       <div class="level">Lv99</div>
-      <div class="pokemon-name">JAMES SHIH</div>
+      <div class="main-name">JAMES SHIH</div>
       <div class="hp-label">HP:</div>
       <div class="hp-bar-outer">
         <div class="hp-bar-inner" id="hp-bar"></div>
@@ -635,7 +634,7 @@
       setTimeout(() => createSpeedLineWave(), 600);
       setTimeout(() => createSpeedLineWave(), 900);
 
-      // Energy rings when Pokemon appears
+      // Energy rings when main appears
       setTimeout(() => {
         for (let i = 0; i < 3; i++) {
           setTimeout(() => {
