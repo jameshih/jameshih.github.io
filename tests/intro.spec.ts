@@ -39,10 +39,10 @@ test("hidden time does not advance the cinematic clock", async ({ page }) => {
   await waitForIntro(page);
   await page.waitForFunction(() => (window.__INTRO_STATE__?.elapsedMs ?? 0) > 300);
 
-  const beforePause = await page.evaluate(() => window.__INTRO_STATE__?.elapsedMs ?? 0);
-  await page.evaluate(() => {
+  const beforePause = await page.evaluate(() => {
     Object.defineProperty(document, "hidden", { configurable: true, value: true });
     document.dispatchEvent(new Event("visibilitychange"));
+    return window.__INTRO_STATE__?.elapsedMs ?? 0;
   });
   await page.waitForTimeout(1_100);
   const afterPause = await page.evaluate(() => window.__INTRO_STATE__?.elapsedMs ?? 0);
