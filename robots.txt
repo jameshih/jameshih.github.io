@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://shih.app/sitemap.xml
