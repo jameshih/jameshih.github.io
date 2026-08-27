@@ -1,23 +1,12 @@
 {
-  "name": "james-shih-cinematic-intro",
+  "name": "james-shih-classic-intro",
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "esbuild src/main.ts --bundle --minify --format=iife --target=es2020 --outfile=assets/generated/app.js && esbuild src/styles.css --bundle --minify --target=es2020 --outfile=assets/generated/app.css",
-    "build:check": "npm run build && git diff --exit-code -- assets/generated",
-    "typecheck": "tsc --noEmit",
     "test": "env -u NO_COLOR playwright test",
     "serve": "env -u NO_COLOR node scripts/serve.mjs"
   },
-  "dependencies": {
-    "three": "0.185.1"
-  },
   "devDependencies": {
-    "@playwright/test": "1.62.1",
-    "@types/pngjs": "6.0.5",
-    "@types/three": "0.185.4",
-    "esbuild": "0.28.2",
-    "pngjs": "7.0.0",
-    "typescript": "7.0.2"
+    "@playwright/test": "1.62.1"
   }
 }
